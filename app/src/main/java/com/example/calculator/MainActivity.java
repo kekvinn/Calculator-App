@@ -1,7 +1,6 @@
 package com.example.calculator;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
@@ -11,17 +10,19 @@ public class MainActivity extends AppCompatActivity {
     float inputValue1, inputValue2;
     String operator;
     boolean newNumber;
+    static TextView resultDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
     public void onNumberBtnClick (View view)
     {
-        TextView resultDisplay = findViewById(R.id.txtResult);
-        if (resultDisplay.getText().toString().equals("0") || newNumber == true)
+        resultDisplay = findViewById(R.id.txtResult);
+        if (resultDisplay.getText().toString().equals("0") || newNumber)
         {
             resultDisplay.setText("");
             newNumber = false;
@@ -65,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     public void onOperatorBtnClick (View view)
     {
         newNumber = true;
-        TextView resultDisplay = findViewById(R.id.txtResult);
         switch (view.getId())
         {
             case R.id.btnPlus:
@@ -86,22 +86,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btnEquals:
                 inputValue2 = Float.parseFloat(resultDisplay.getText().toString());
-                float result = calculateResult();
-                if (result - (int)result == 0)
-                    resultDisplay.setText(String.valueOf((int)result));
-                else
-                    resultDisplay.setText(String.valueOf(calculateResult()));
+                setResult(calculateResult());
                 break;
         }
     }
 
     public void onMiscBtnClick (View view)
     {
-        TextView resultDisplay = findViewById(R.id.txtResult);
-        newNumber = false;
         switch (view.getId())
         {
             case R.id.btnDecimal:
+                newNumber = false;
                 if(resultDisplay.getText().toString().indexOf('.') == -1)
                     resultDisplay.setText(resultDisplay.getText().toString() + ".");
                 break;
@@ -113,14 +108,12 @@ public class MainActivity extends AppCompatActivity {
                 newNumber = false;
                 break;
             case R.id.btnPercent:
-                resultDisplay.setText((String.valueOf(Float.parseFloat(resultDisplay.getText().toString()) / 100)));
+                newNumber = true;
+                setResult(Float.parseFloat(resultDisplay.getText().toString()) / 100);
                 break;
             case R.id.btnPlusMinus:
-                float result = (Float.parseFloat(resultDisplay.getText().toString()) * -1);
-                if (result - (int)result == 0)
-                    resultDisplay.setText(String.valueOf((int)result));
-                else
-                    resultDisplay.setText(String.valueOf(result));
+                newNumber = false;
+                setResult(Float.parseFloat(resultDisplay.getText().toString()) * -1);
                 break;
         }
     }
@@ -146,5 +139,13 @@ public class MainActivity extends AppCompatActivity {
                 result = inputValue1;
         }
         return result;
+    }
+
+    private void setResult(float result)
+    {
+        if (result - (int)result == 0)
+            resultDisplay.setText(String.valueOf((int)result));
+        else
+            resultDisplay.setText(String.valueOf(result));
     }
 }
