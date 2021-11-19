@@ -10,11 +10,10 @@ public class MainActivity extends AppCompatActivity {
     float inputValue1, inputValue2;
     String operator;
     boolean newNumber;
-    static TextView resultDisplay;
+    TextView resultDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
